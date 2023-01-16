@@ -1,0 +1,28 @@
+{
+  "name": "learn-boilerplate-mvc-node-grpc",
+  "version": "1.0.0",
+  "description": "learn boilerplate node js grpc using mvc architecture",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "learn",
+    "node-grpc",
+    "node",
+    "grpc",
+    "boilerplate",
+    "mvc"
+  ],
+  "author": "rafifmulia",
+  "license": "MIT",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.8.4",
+    "@grpc/proto-loader": "^0.7.4",
+    "async": "^3.2.4",
+    "dotenv": "^16.0.3",
+    "google-protobuf": "^3.21.2",
+    "lodash": "^4.17.21",
+    "path": "^0.12.7"
+  }
+}

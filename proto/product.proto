@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.learning.product";
+option java_outer_classname = "ProductProto";
+option objc_class_prefix = "PP";
+
+package product;
+
+service Product {
+  rpc listProducts (Empty) returns (stream ResponseProductSeller) {}
+  rpc listProducts1 (Empty) returns (stream ProductSeller) {}
+}
+
+message Empty {}
+
+message TProduct {
+  uint32 id = 1;
+  string name = 2;
+}
+
+message TSeller {
+  uint32 sid = 1;
+  string name = 2;
+}
+
+message ProductSeller {
+  repeated TProduct products = 1;
+  repeated TSeller sellers = 2;
+}
+
+message ResponseProductSeller {
+  message RProduct {
+    uint32 id = 1;
+    string name = 2;
+    message RSeller {
+      uint32 sid = 1;
+      string name = 2; 
+    }
+    RSeller seller = 3;
+  }
+  repeated RProduct data = 1;
+}
