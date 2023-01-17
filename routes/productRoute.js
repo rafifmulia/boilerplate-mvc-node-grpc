@@ -12,6 +12,9 @@ function route(server) {
   server.addService(productProto.Product.service, {
     listProducts: productController.listProducts,
     listProducts1: productController.listProducts1,
+    listProducts2: productController.listProducts2,
+    detailProduct: productController.detailProduct,
+    searchProduct: productController.searchProduct,
   })
 }
 

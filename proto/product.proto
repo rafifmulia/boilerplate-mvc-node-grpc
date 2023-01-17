@@ -1,5 +1,8 @@
 syntax = "proto3";
 
+import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
+
 option java_multiple_files = true;
 option java_package = "io.grpc.learning.product";
 option java_outer_classname = "ProductProto";
@@ -8,8 +11,11 @@ option objc_class_prefix = "PP";
 package product;
 
 service Product {
-  rpc listProducts (Empty) returns (stream ResponseProductSeller) {}
+  rpc detailProduct (TProduct) returns (RDetailProduct) {}
+  rpc listProducts (Empty) returns (stream BetterResponse) {}
   rpc listProducts1 (Empty) returns (stream ProductSeller) {}
+  rpc listProducts2 (Empty) returns (stream ResponseProductSeller) {}
+  rpc searchProduct (TProduct) returns (RSearchProduct) {}
 }
 
 message Empty {}
@@ -40,4 +46,30 @@ message ResponseProductSeller {
     RSeller seller = 3;
   }
   repeated RProduct data = 1;
+}
+
+message BetterResponse {
+  uint32 code = 1;
+  string details = 2;
+  // google.protobuf.Any data = 3;
+  repeated RProduct data = 3;
+}
+
+message RDetailProduct {
+  uint32 code = 1;
+  string details = 2;
+  // google.protobuf.Any data = 3;
+  RProduct data = 3;
+}
+
+message RSearchProduct {
+  uint32 code = 1;
+  string details = 2;
+  // case jika ingin menampilkan data json either string kosong
+  oneof representative_data {
+    RProduct data = 3;
+    string data_kosong = 4;
+  }
+  // https://stackoverflow.com/questions/74300355/why-is-google-protobuf-struct-not-working-on-nodejs
+  // google.protobuf.Value data = 3;
 }

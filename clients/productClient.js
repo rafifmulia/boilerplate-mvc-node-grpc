@@ -12,26 +12,61 @@ const productProto = grpc.loadPackageDefinition(packageProduct).product;
 let target = 'localhost:' + process.env.PORT;
 const client = new productProto.Product(target, grpc.credentials.createInsecure());
 
-function callListProducts(callback) {
-  const call = client.listProducts(function (err) {
-    console.error('cara ini hanya berlaku jika client yang melakukan stream ke server');
-    if (err) {
-      callback(err);
-      return;
-    }
-  });
-  call.on('data', function(streamData) {
-    console.log(JSON.stringify(streamData));
-  });
-  call.on('end', function() {
-    console.log('end');
-    callback();
-  });
+async function callListProducts() {
+  try {
+    const call = await client.listProducts();
+    call.on('data', function(streamData) {
+      console.log(streamData);
+      // console.log(JSON.stringify(streamData));
+      // console.log(streamData.data[0].seller);
+    });
+    call.on('error', function(err) {
+      console.log('error from server');
+      console.log(JSON.stringify(err));
+    });
+    call.on('end', function() {
+      console.log('end');
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+function callDetailProduct() {
+  try {
+    client.detailProduct({id: 1, year: 2022}, function(err, response) {
+      if (err) {
+        console.log('ini error');
+        console.log(JSON.stringify(err));
+        return;
+      }
+      console.log(response);
+    });
+  } catch(err) {
+    console.error(err);
+  }
+}
+
+function callSearchProduct() {
+  try {
+    client.searchProduct({id: 1, year: 2022}, function(err, response) {
+      if (err) {
+        console.log('ini error');
+        console.log(JSON.stringify(err));
+        return;
+      }
+      console.log(response);
+    });
+  } catch(err) {
+    console.error(err);
+  }
 }
 
 function main() {
-  async.series([
-    callListProducts
+  Promise.all([
+    // callListProducts(),
+    // callDetailProduct(),
+    callSearchProduct()
   ]);
 }
 
