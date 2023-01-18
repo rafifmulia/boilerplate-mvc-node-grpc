@@ -15,6 +15,8 @@ function route(server) {
     listProducts2: productController.listProducts2,
     detailProduct: productController.detailProduct,
     searchProduct: productController.searchProduct,
+    deadlineProduct: productController.deadlineProduct,
+    downloadProduct: productController.downloadProduct,
   })
 }
 

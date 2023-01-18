@@ -36,7 +36,7 @@ async function getFeature(call, callback) {
  * @param {Writable} call Writable stream for responses with an additional
  *     request property for the request value.
  */
-async function listFeatures(call) {
+function listFeatures(call) {
   try {
     const { lo, hi } = call.request;
     const left = _.min([lo.longitude, hi.longitude]);
@@ -51,9 +51,19 @@ async function listFeatures(call) {
         feature.location.latitude >= bottom &&
         feature.location.latitude <= top) {
         call.write(feature);
+        // setTimeout(() => {
+        //   call.write(feature);
+        // }, 3000);
       }
     }
     call.end();
+    // call.on('cancel', function() {
+    //   console.log('end of stream request');
+    // });
+    // call.emit('end', {
+    //   code: grpc.status.UNKNOWN,
+    //   details: err.message
+    // })
   } catch (err) {
     console.error(err);
   }

@@ -16,6 +16,8 @@ service Product {
   rpc listProducts1 (Empty) returns (stream ProductSeller) {}
   rpc listProducts2 (Empty) returns (stream ResponseProductSeller) {}
   rpc searchProduct (TProduct) returns (RSearchProduct) {}
+  rpc deadlineProduct (TProduct) returns (BetterResponse) {}
+  rpc downloadProduct (Empty) returns (stream DownloadFile) {}
 }
 
 message Empty {}
@@ -72,4 +74,8 @@ message RSearchProduct {
   }
   // https://stackoverflow.com/questions/74300355/why-is-google-protobuf-struct-not-working-on-nodejs
   // google.protobuf.Value data = 3;
+}
+
+message DownloadFile {
+  bytes fileChunk = 1;
 }

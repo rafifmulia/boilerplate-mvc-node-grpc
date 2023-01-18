@@ -36,7 +36,7 @@ function callGetFeature() {
   client.getFeature(point1, respGetFeature);
 }
 
-function callListFeatures() {
+function callListFeatures(callback) {
   const rectangle = {
     lo: {
       latitude: 400000000,
@@ -55,8 +55,16 @@ function callListFeatures() {
           feature.location.longitude/COORD_FACTOR);
   });
   call.on('end', function() {
-    console.log('end respnse');
-  })
+    console.log('end response of stream');
+    callback();
+  });
+  // setTimeout(() => {
+  //   try {
+  //     call.cancel();
+  //   } catch (err) {
+  //     console.log('cancelled');
+  //   }
+  // }, 2000);
 }
 
 function callRecordRoute() {
@@ -131,18 +139,18 @@ function callRouteChat() {
 }
 
 function main() {
-  Promise.all([
-    callGetFeature(),
-    callListFeatures(),
-    callRecordRoute(),
-    callRouteChat(),
-  ])
-  // async.series([
-  //   callGetFeature,
-  //   callListFeatures,
-  //   callRecordRoute,
-  //   callRouteChat
-  // ]);
+  // Promise.all([
+  //   // callGetFeature(),
+  //   // callListFeatures(),
+  //   // callRecordRoute(),
+  //   // callRouteChat(),
+  // ])
+  async.series([
+    // callGetFeature,
+    callListFeatures,
+    // callRecordRoute,
+    // callRouteChat
+  ]);
 }
 
 main();

@@ -1,6 +1,7 @@
 const grpc = require('@grpc/grpc-js');
 const path = require('path');
 const fs = require('fs');
+const { Buffer } = require('buffer');
 
 let product_list, seller_list;
 
@@ -194,10 +195,64 @@ function searchProduct(call, callback) {
   }
 }
 
+function deadlineProduct(call, callback) {
+  try {
+    const data = [];
+    // throw new Error('throw error from server'); // work inside try or outer
+    for (const product of product_list) {
+      for (const seller of seller_list) {
+        if (product.sid === seller.id) {
+          data.push({
+            id: product.id,
+            name: product.name,
+            seller: {
+              sid: seller.id,
+              name: seller.name
+            }
+          });
+        }
+      }
+    }
+    // data object either string kosong
+    // https://stackoverflow.com/questions/71339570/is-it-a-good-way-to-declare-a-string-field-as-json-in-grpc-proto
+    // https://stackoverflow.com/questions/59530736/how-to-achieve-dynamic-custom-fields-of-different-data-type-using-grpc-proto/59568458#59568458
+    setTimeout(() => {
+      callback(null, {
+        code: grpc.status.OK,
+        details: 'ok',
+        data,
+      });
+    }, 5000);
+  } catch (err) {
+    callback({
+      code: grpc.status.UNKNOWN,
+      details: err.message
+    });
+  }
+}
+
+function downloadProduct(call) {
+  try {
+    const fileBuf = fs.readFileSync(path.resolve(__dirname, '..', 'db', 'product_db.json'));
+    // console.log([...fileBuf]); // kalo mau buffer to array
+    for (const b of fileBuf) {
+      call.write({fileChunk: Buffer.from([b])});
+    }
+    call.end();
+  } catch (err) {
+    call.emit('error', {
+      code: grpc.status.UNKNOWN,
+      details: err.message
+    })
+  }
+}
+
 module.exports = {
   listProducts,
   listProducts1,
   listProducts2,
   detailProduct,
   searchProduct,
+  deadlineProduct,
+  downloadProduct
 }

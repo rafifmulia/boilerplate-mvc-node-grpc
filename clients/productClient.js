@@ -3,6 +3,7 @@ const protoLoader = require('@grpc/proto-loader');
 const path = require('path');
 const protoLoaderConf = require('../configs/protoLoaderConf');
 const async = require('async');
+const fs = require('fs');
 require('dotenv').config({ path: path.resolve(__dirname, '..', '.env'), override: true });
 
 const PROTO_PRODUCT = path.resolve(__dirname, '..', 'proto', 'product.proto');
@@ -62,11 +63,45 @@ function callSearchProduct() {
   }
 }
 
+function callDeadlineProduct() {
+  try {
+    client.deadlineProduct({}, {deadline: Date.now()+5000}, function(err, response) {
+      if (err) {
+        console.log('ini error');
+        console.log(JSON.stringify(err));
+        return;
+      }
+      console.log(response);
+    });
+  } catch(err) {
+    console.error(err);
+  }
+}
+
+function callDownloadProduct() {
+  try {
+    const call = client.downloadProduct({});
+    fs.writeFileSync('product_db.json', '');
+    const fd = fs.openSync('product_db.json', 'as'); // langsung w tanpa writeFileSync juga bisa
+    call.on('data', function({fileChunk}) {
+      fs.writeSync(fd, fileChunk);
+    });
+    call.on('end', function() {
+      fs.closeSync(fd);
+      console.log('end');
+    });
+  } catch(err) {
+    console.error(err);
+  }
+}
+
 function main() {
   Promise.all([
     // callListProducts(),
     // callDetailProduct(),
-    callSearchProduct()
+    // callSearchProduct(),
+    // callDeadlineProduct(),
+    callDownloadProduct()
   ]);
 }
 
