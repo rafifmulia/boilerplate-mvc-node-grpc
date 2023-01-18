@@ -8,10 +8,10 @@ const PROTO_ROUTE_GUIDE = path.resolve(__dirname, '..', 'proto', 'routeguide.pro
 
 const packageRouteGuide = protoLoader.loadSync(PROTO_ROUTE_GUIDE, protoLoaderConf);
 
-const routeGuideProto = grpc.loadPackageDefinition(packageRouteGuide).routeguide;
+const protoRouteGuide = grpc.loadPackageDefinition(packageRouteGuide).routeguide;
 
 function route(server) {
-  server.addService(routeGuideProto.RouteGuide.service, {
+  server.addService(protoRouteGuide.RouteGuide.service, {
     getFeature: routeguideController.getFeature,
     listFeatures: routeguideController.listFeatures,
     recordRoute: routeguideController.recordRoute,

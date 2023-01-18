@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "fullname": "Yasuo",
+    "email": "yasuo@gmail.com",
+    "phone": "81288789878",
+    "isact": 1,
+    "ctm": 0,
+    "mtm": 0
+  },
+  {
+    "id": 2,
+    "fullname": "Yone",
+    "email": "yone@gmail.com",
+    "phone": "81288789879",
+    "isact": 1,
+    "ctm": 0,
+    "mtm": 0
+  }
+]

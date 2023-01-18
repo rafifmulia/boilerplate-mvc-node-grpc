@@ -6,10 +6,13 @@ const productController = require('../controllers/productController');
 
 const PROTO_PRODUCT = path.resolve(__dirname, '..', 'proto', 'product.proto');
 const packageProduct = protoLoader.loadSync(PROTO_PRODUCT, protoLoaderConf);
-const productProto = grpc.loadPackageDefinition(packageProduct).product;
+const protoProduct = grpc.loadPackageDefinition(packageProduct).product;
+
+// cara lain load & penggunaan proto
+// https://stackoverflow.com/questions/33792728/cant-read-bytes-from-protobuf-message-in-javascript
 
 function route(server) {
-  server.addService(productProto.Product.service, {
+  server.addService(protoProduct.Product.service, {
     listProducts: productController.listProducts,
     listProducts1: productController.listProducts1,
     listProducts2: productController.listProducts2,

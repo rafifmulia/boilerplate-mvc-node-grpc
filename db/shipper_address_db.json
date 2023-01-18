@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "uid": 1,
+    "street": "jl yas raya",
+    "postalcode": "16488",
+    "village": "ionia village",
+    "district": "ionia district",
+    "state": "ionia state",
+    "ismain": 1
+  },
+  {
+    "id": 2,
+    "uid": 2,
+    "street": "jl yas raya",
+    "postalcode": "16488",
+    "village": "ionia village",
+    "district": "ionia district",
+    "state": "ionia state",
+    "ismain": 1
+  }
+]

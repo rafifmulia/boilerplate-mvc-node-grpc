@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+import "google/protobuf/any.proto";
+import "google/protobuf/struct.proto";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.learning.user";
+option java_outer_classname = "UserProto";
+option objc_class_prefix = "UP";
+
+package user;
+
+service User {
+ rpc DetailUser (TUser) returns (RDetailUser) {}
+ rpc ListUser (Empty) returns (RListUsers) {}
+ rpc AddUser (stream UserShippers) returns (RListUsers) {}
+ rpc UpdateUser (stream UserShippers) returns (stream RDetailUser) {}
+ rpc DownloadUser (Empty) returns (stream DownloadFile) {}
+}
+
+message Empty {}
+
+message TUser {
+  uint32 id = 1;
+  string fullname = 2;
+  string email = 3;
+  string phone = 4;
+  uint32 isact = 6;
+  uint32 ctm = 7;
+  uint32 mtm = 8;
+}
+
+message TShipperAddr {
+  uint32 id = 1;
+  uint32 uid = 2;
+  string street = 3;
+  string postalcode = 4;
+  string village = 5;
+  string district = 6;
+  string state = 7;
+  uint32 ismain = 8;
+}
+
+message UserShippers {
+  uint32 id = 1;
+  string fullname = 2;
+  string email = 3;
+  string phone = 4;
+  uint32 isact = 6;
+  uint32 ctm = 7;
+  uint32 mtm = 8;
+  repeated TShipperAddr shipper_address = 9;
+}
+
+message RDetailUser {
+  uint32 code = 1;
+  string details = 2;
+  UserShippers data = 3;
+}
+
+message RListUsers {
+  uint32 code = 1;
+  string details = 2;
+  repeated UserShippers data = 3;
+}
+
+message DownloadFile {
+  bytes fileChunk = 1;
+}

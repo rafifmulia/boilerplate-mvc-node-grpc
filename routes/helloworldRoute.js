@@ -8,10 +8,10 @@ const PROTO_HELLO_WORLD = path.resolve(__dirname, '..', 'proto', 'helloworld.pro
 
 const packageHelloWorld = protoLoader.loadSync(PROTO_HELLO_WORLD, protoLoaderConf);
 
-const helloWorldProto = grpc.loadPackageDefinition(packageHelloWorld).helloworld;
+const protoHelloWorld = grpc.loadPackageDefinition(packageHelloWorld).helloworld;
 
 function route(server) {
-  server.addService(helloWorldProto.Greeter.service, {sayHi: helloWorldController.sayHi});
+  server.addService(protoHelloWorld.Greeter.service, {sayHi: helloWorldController.sayHi});
 }
 
 module.exports = route;
